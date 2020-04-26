@@ -16,13 +16,12 @@ public class GUI {
     private JButton getElement;
     private JTextField textField1;
     private JTextField textField2;
-    private JButton setElement;
+    private JButton deleteElement;
 
     public GUI() {
         List list = new List();
         final String[] file = new String[1];
         final int[] k = new int[1];
-        final int[] length = {0};
 
         setFileElement.addActionListener(new ActionListener() {
             @Override
@@ -39,10 +38,9 @@ public class GUI {
                     Scanner scan = new Scanner(new File(file[0]));
                     while (scan.hasNext()) {
                         list.add(Integer.parseInt(scan.nextLine()));
-                        length[0]++;
                     }
                     JTableUtils.initJTableForArray(table1, 40, true, true, true, true);
-                    JTableUtils.writeArrayToJTable(table1, list.toArray(length[0]));
+                    JTableUtils.writeArrayToJTable(table1, list.toArray());
                 } catch (FileNotFoundException ex) {
                     ex.printStackTrace();
                 }
@@ -53,11 +51,20 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int[] arr = new int[1];
-                arr[0] = list.get(k[0], length[0]).getData();
+                arr[0] = list.get(k[0]).getData();
                 JTableUtils.initJTableForArray(table1, 40, true, true, true, true);
                 JTableUtils.writeArrayToJTable(table1, arr);
                 list.clean();
-                length[0] = 0;
+            }
+        });
+
+        deleteElement.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                list.delete(k[0]);
+                JTableUtils.initJTableForArray(table1, 40, true, true, true, true);
+                JTableUtils.writeArrayToJTable(table1, list.toArray());
+                list.clean();
             }
         });
     }

@@ -3,6 +3,7 @@ package com.company;
 public class List {
     private ListElement head;
     private ListElement tail;
+    private int length = 0;
 
     public List() { }
 
@@ -16,9 +17,10 @@ public class List {
             tail.setNext(el);
             tail = el;
         }
+        length++;
     }
 
-    public ListElement get(int k, int length) {
+    public ListElement get(int k) {
         ListElement el;
         if (k > length / 2) {
             el = tail;
@@ -38,7 +40,27 @@ public class List {
         return el;
     }
 
-    public int[] toArray(int length) {
+    public void delete(int k) {
+        ListElement el = get(k);
+        if (el == head) {
+            head = el.getNext();
+            head.setPrev(null);
+        } else {
+            if (el == tail) {
+                tail = el.getPrev();
+                tail.setNext(null);
+            } else {
+                el.getPrev().setNext(el.getNext());
+            }
+        }
+        length--;
+    }
+
+    public int length() {
+        return length;
+    }
+
+    public int[] toArray() {
         int[] array = new int[length];
         ListElement el = head;
         int i = 0;
@@ -54,5 +76,6 @@ public class List {
     public void clean() {
         head = null;
         tail = null;
+        length = 0;
     }
 }
